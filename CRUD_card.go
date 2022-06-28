@@ -1,13 +1,8 @@
 package main
 
-import(
-	"fmt"
-	"log"
-	"strconv"
-)
 
 //	1件新規作成
-func (card *Card)createNewCard_DB(err error){
+func createNewCard_DB(card *Card) (err error) {
 
-	dbCreate,err:=db.Prepare
+	dbCreate, err := db.Prepare
 }
