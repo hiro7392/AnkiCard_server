@@ -1,9 +1,11 @@
+package main
+
 type Card struct {
 	CardId        int
 	TagId         int
-	LearinigLevel int
+	LearningLevel int
 	QuestionText  string
-	AnswertText   string
+	AnswerText   string
 }
 type User struct {
 	UserId         int
