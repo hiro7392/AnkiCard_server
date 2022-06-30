@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"net/url"
 	//"strconv"
 )
 
@@ -26,24 +25,6 @@ func getCardsOfUser(w http.ResponseWriter, r *http.Request) (err error) {
 	return
 }
 
-//	カードを新規作成
-func createNewCard(w http.ResponseWriter, r *http.Request) (err error) {
-	w.Header().Set("Access-Control-Allow-Methods", "POST")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	u, _ := url.ParseQuery(r.URL.RawQuery)
-	fmt.Println(u)
-
-	// query -> map[a:[AAA] b:[BBB] c:[CCC] d:[DDD]]
-
-	var card Card
-	card.AnswerText = u["answerText"][0]
-	card.QuestionText = u["questionText"][0]
-	card.LearningLevel = 0
-	card.TagId = 1
-
-	w.WriteHeader(200)
-	return
-}
 func handleRequest(w http.ResponseWriter, r *http.Request) {
 
 	var err error
@@ -55,14 +36,13 @@ func handleRequest(w http.ResponseWriter, r *http.Request) {
 	case "PUT":
 		err = hello(w, r)
 	case "DELETE":
-		err = hello(w, r)
+		err = deleteOneCard(w, r)
 	}
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	fmt.Printf("first called\n")
 	w.WriteHeader(200)
 	return
 }
@@ -75,5 +55,6 @@ func main() {
 		Addr: URL,
 	}
 	http.HandleFunc("/", handleRequest)
+
 	server.ListenAndServe()
 }
