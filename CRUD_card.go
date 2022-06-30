@@ -27,3 +27,18 @@ func deleteOneCard_DB(cardId int) (err error) {
 	fmt.Println("delete success! card_id=? deleted!", cardId)
 	return
 }
+
+//1件更新
+func updateOneCard_DB(card *Card) (err error) {
+
+	var t = time.Now()
+	const layout2 = "2006-01-02 15:04:05"
+	//更新される可能性があるのは、問題文、答え、タグIDのいずれか
+	upd, err := db.Prepare("UPDATE cards SET tag_id=?,question_text=?,answer_text=?, updated_at=? WHERE card_id=?")
+	if err != nil {
+		fmt.Println("update failed! card_id=", card.CardId)
+	}
+	upd.Exec(card.TagId, card.QuestionText, card.AnswerText, t.Format(layout2), card.CardId)
+
+	return
+}

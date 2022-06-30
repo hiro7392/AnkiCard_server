@@ -1,31 +1,20 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 	//"strconv"
 )
-
-//	カードを全権取得
-func getCardsOfUser(w http.ResponseWriter, r *http.Request) (err error) {
-	w.Header().Set("Access-Control-Allow-Methods", "GET")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-
-	fmt.Println("we will return cards all of user")
-	w.WriteHeader(200)
-	return
-}
 
 func handleRequest(w http.ResponseWriter, r *http.Request) {
 
 	var err error
 	switch r.Method {
 	case "GET":
-		err = getCardsOfUser(w, r)
+		err = createNewCard(w, r)
 	case "POST":
 		err = createNewCard(w, r)
 	case "PUT":
-		err = hello(w, r)
+		err = updateOneCard(w, r)
 	case "DELETE":
 		err = deleteOneCard(w, r)
 	}
