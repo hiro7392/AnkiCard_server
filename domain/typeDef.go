@@ -1,11 +1,11 @@
-package main
+package domain
 
 type Card struct {
 	CardId        int
 	TagId         int
 	LearningLevel int
 	QuestionText  string
-	AnswerText   string
+	AnswerText    string
 }
 type User struct {
 	UserId         int

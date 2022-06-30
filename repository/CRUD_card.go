@@ -1,9 +1,10 @@
-package main
+package repository
 
 import (
 	"fmt"
 	"log"
 	"time"
+	"github.com/sakana7392/AnkiCard_server/domain"
 )
 
 // 1件取得
