@@ -7,11 +7,11 @@ import (
 )
 
 // 1件取得
-func getOneCard_DB(cardId int) (card Card,err error) {
+func getOneCard_DB(cardId int) (card Card, err error) {
 
-	rows, err := db.Query("SELECT card_id,question_text,answer_text FROM cards WHERE card_id=?",cardId)
-	for rows.Next(){
-		if err:=rows.Scan(&card.CardId,&card.QuestionText,&card.AnswerText); err!=nil{
+	rows, err := db.Query("SELECT card_id,question_text,answer_text FROM cards WHERE card_id=?", cardId)
+	for rows.Next() {
+		if err := rows.Scan(&card.CardId, &card.QuestionText, &card.AnswerText); err != nil {
 			log.Fatal(err)
 			log.Panicln(err)
 		}

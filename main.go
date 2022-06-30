@@ -5,7 +5,7 @@ import (
 	//"strconv"
 )
 
-func handleRequest(w http.ResponseWriter, r *http.Request) {
+func handleCardRequest(w http.ResponseWriter, r *http.Request) {
 
 	var err error
 	switch r.Method {
@@ -34,7 +34,8 @@ func main() {
 	server := http.Server{
 		Addr: URL,
 	}
-	http.HandleFunc("/", handleRequest)
+	//カードのCRUD処理
+	http.HandleFunc("/card", handleCardRequest)
 
 	server.ListenAndServe()
 }

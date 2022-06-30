@@ -17,7 +17,6 @@ func getOneCard(w http.ResponseWriter, r *http.Request) (err error) {
 	id, err := strconv.Atoi(path.Base(r.URL.Path))
 	if err != nil {
 		log.Println(err)
-		log.Println(err)
 		return
 	}
 	card, err := getOneCard_DB(id)
