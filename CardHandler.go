@@ -14,6 +14,7 @@ import (
 func getOneCard(w http.ResponseWriter, r *http.Request) (err error) {
 	w.Header().Set("Access-Control-Allow-Methods", "GET")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	id, err := strconv.Atoi(path.Base(r.URL.Path))
 	if err != nil {
 		log.Println(err)

@@ -35,7 +35,7 @@ func main() {
 		Addr: URL,
 	}
 	//カードのCRUD処理
-	http.HandleFunc("/card", handleCardRequest)
+	http.HandleFunc("/card/", handleCardRequest)
 
 	server.ListenAndServe()
 }
