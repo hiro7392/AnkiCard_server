@@ -6,15 +6,6 @@ import (
 	//"strconv"
 )
 
-func hello(w http.ResponseWriter, r *http.Request) (err error) {
-	w.Header().Set("Access-Control-Allow-Methods", "GET")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-
-	fmt.Printf("first called\n")
-	w.WriteHeader(200)
-	return
-}
-
 //	カードを全権取得
 func getCardsOfUser(w http.ResponseWriter, r *http.Request) (err error) {
 	w.Header().Set("Access-Control-Allow-Methods", "GET")
