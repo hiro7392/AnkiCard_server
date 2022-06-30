@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -8,6 +9,31 @@ import (
 	"path"
 	"strconv"
 )
+
+// カードを1件取得
+func getOneCard(w http.ResponseWriter, r *http.Request) (err error) {
+	w.Header().Set("Access-Control-Allow-Methods", "GET")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	id, err := strconv.Atoi(path.Base(r.URL.Path))
+	if err != nil {
+		log.Println(err)
+		log.Println(err)
+		return
+	}
+	card, err := getOneCard_DB(id)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	output, err := json.MarshalIndent(&card, "", "\t")
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	w.Write(output)
+	return
+}
 
 //	カードを新規作成
 func createNewCard(w http.ResponseWriter, r *http.Request) (err error) {
@@ -75,7 +101,7 @@ func updateOneCard(w http.ResponseWriter, r *http.Request) (err error) {
 
 	card.AnswerText = u["answerText"][0]
 	card.QuestionText = u["questionText"][0]
-	card.CardId,err = strconv.Atoi(u["cardId"][0])
+	card.CardId, err = strconv.Atoi(u["cardId"][0])
 	if err != nil {
 		log.Println(err)
 		return

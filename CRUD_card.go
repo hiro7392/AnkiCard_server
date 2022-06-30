@@ -6,6 +6,20 @@ import (
 	"time"
 )
 
+// 1件取得
+func getOneCard_DB(cardId int) (card Card,err error) {
+
+	rows, err := db.Query("SELECT card_id,question_text,answer_text FROM cards WHERE card_id=?",cardId)
+	for rows.Next(){
+		if err:=rows.Scan(&card.CardId,&card.QuestionText,&card.AnswerText); err!=nil{
+			log.Fatal(err)
+			log.Panicln(err)
+		}
+	}
+
+	return
+}
+
 //	1件新規作成
 func createNewCard_DB(card *Card) (err error) {
 	var t = time.Now()

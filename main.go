@@ -10,7 +10,7 @@ func handleRequest(w http.ResponseWriter, r *http.Request) {
 	var err error
 	switch r.Method {
 	case "GET":
-		err = createNewCard(w, r)
+		err = getOneCard(w, r)
 	case "POST":
 		err = createNewCard(w, r)
 	case "PUT":
