@@ -1,4 +1,4 @@
-package main
+package test
 
 import (
 	"bytes"
@@ -9,7 +9,6 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/sakana7392/AnkiCard_server/domain"
 )
 
 func TestHandleCardRequest(t *testing.T) {
@@ -17,7 +16,7 @@ func TestHandleCardRequest(t *testing.T) {
 	r := httptest.NewRequest("GET", "/card/6", nil)
 	w := httptest.NewRecorder()
 
-	handleCardRequest(w, r)
+	HandleCardRequest(w, r)
 	resp := w.Result()
 	if resp.StatusCode != 200 {
 		t.Errorf("got = %d, want = 200", resp.StatusCode)

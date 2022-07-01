@@ -14,7 +14,7 @@ import (
 )
 
 // カードを1件取得
-func getOneCard(w http.ResponseWriter, r *http.Request) (err error) {
+func GetOneCard(w http.ResponseWriter, r *http.Request) (err error) {
 	w.Header().Set("Access-Control-Allow-Methods", "GET")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
@@ -39,7 +39,7 @@ func getOneCard(w http.ResponseWriter, r *http.Request) (err error) {
 }
 
 //	カードを新規作成
-func createNewCard(w http.ResponseWriter, r *http.Request) (err error) {
+func CreateNewCard(w http.ResponseWriter, r *http.Request) (err error) {
 	w.Header().Set("Access-Control-Allow-Methods", "POST")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	u, _ := url.ParseQuery(r.URL.RawQuery)
@@ -69,7 +69,7 @@ func createNewCard(w http.ResponseWriter, r *http.Request) (err error) {
 }
 
 //既存のカードを一件削除
-func deleteOneCard(w http.ResponseWriter, r *http.Request) (err error) {
+func DeleteOneCard(w http.ResponseWriter, r *http.Request) (err error) {
 	w.Header().Set("Access-Control-Allow-Methods", "DELETE")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 
@@ -93,7 +93,7 @@ func deleteOneCard(w http.ResponseWriter, r *http.Request) (err error) {
 }
 
 //	カード情報を更新
-func updateOneCard(w http.ResponseWriter, r *http.Request) (err error) {
+func UpdateOneCard(w http.ResponseWriter, r *http.Request) (err error) {
 	w.Header().Set("Access-Control-Allow-Methods", "PUT")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	u, _ := url.ParseQuery(r.URL.RawQuery)

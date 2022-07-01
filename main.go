@@ -2,10 +2,11 @@ package main
 
 import (
 	"net/http"
+
 	"github.com/sakana7392/AnkiCard_server/handler"
 )
 
-func handleCardRequest(w http.ResponseWriter, r *http.Request) {
+func HandleCardRequest(w http.ResponseWriter, r *http.Request) {
 
 	var err error
 	switch r.Method {
