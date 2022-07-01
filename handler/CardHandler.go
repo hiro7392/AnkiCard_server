@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"go get github.com/sakana7392/AnkiCard_server/handler/repository"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -9,6 +8,7 @@ import (
 	"net/url"
 	"path"
 	"strconv"
+	"github.com/sakana7392/AnkiCard_server/repository"
 )
 
 // カードを1件取得
