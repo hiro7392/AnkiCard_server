@@ -10,13 +10,13 @@ func handleCardRequest(w http.ResponseWriter, r *http.Request) {
 	var err error
 	switch r.Method {
 	case "GET":
-		err = handler.getOneCard(w, r)
+		err = handler.GetOneCard(w, r)
 	case "POST":
-		err = handler.createNewCard(w, r)
+		err = handler.CreateNewCard(w, r)
 	case "PUT":
-		err = handler.updateOneCard(w, r)
+		err = handler.UpdateOneCard(w, r)
 	case "DELETE":
-		err = handler.deleteOneCard(w, r)
+		err = handler.DeleteOneCard(w, r)
 	}
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
