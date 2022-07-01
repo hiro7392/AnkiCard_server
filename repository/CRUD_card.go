@@ -5,12 +5,13 @@ import (
 	"log"
 	"time"
 	"github.com/sakana7392/AnkiCard_server/domain"
+	"github.com/sakana7392/AnkiCard_server/repository"
 )
 
 // 1件取得
-func getOneCard_DB(cardId int) (card Card, err error) {
+func getOneCard_DB(cardId int) (card domain.Card, err error) {
 
-	rows, err := db.Query("SELECT card_id,question_text,answer_text FROM cards WHERE card_id=?", cardId)
+	rows, err := repository.db.Query("SELECT card_id,question_text,answer_text FROM cards WHERE card_id=?", cardId)
 	for rows.Next() {
 		if err := rows.Scan(&card.CardId, &card.QuestionText, &card.AnswerText); err != nil {
 			log.Fatal(err)
@@ -22,7 +23,7 @@ func getOneCard_DB(cardId int) (card Card, err error) {
 }
 
 //	1件新規作成
-func createNewCard_DB(card *Card) (err error) {
+func createNewCard_DB(card *domain.Card) (err error) {
 	var t = time.Now()
 	const layout2 = "2006-01-02 15:04:05"
 
@@ -44,8 +45,7 @@ func deleteOneCard_DB(cardId int) (err error) {
 }
 
 //1件更新
-func updateOneCard_DB(card *Card) (err error) {
-
+func updateOneCard_DB(card *domain.Card) (err error) {
 	var t = time.Now()
 	const layout2 = "2006-01-02 15:04:05"
 	//更新される可能性があるのは、問題文、答え、タグIDのいずれか

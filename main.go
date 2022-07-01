@@ -2,7 +2,6 @@ package main
 
 import (
 	"net/http"
-	//"strconv"
 	"github.com/sakana7392/AnkiCard_server/handler"
 )
 
@@ -11,13 +10,13 @@ func handleCardRequest(w http.ResponseWriter, r *http.Request) {
 	var err error
 	switch r.Method {
 	case "GET":
-		err = getOneCard(w, r)
+		err = handler.getOneCard(w, r)
 	case "POST":
-		err = createNewCard(w, r)
+		err = handler.createNewCard(w, r)
 	case "PUT":
-		err = updateOneCard(w, r)
+		err = handler.updateOneCard(w, r)
 	case "DELETE":
-		err = deleteOneCard(w, r)
+		err = handler.deleteOneCard(w, r)
 	}
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

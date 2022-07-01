@@ -9,6 +9,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/sakana7392/AnkiCard_server/domain"
 )
 
 func TestHandleCardRequest(t *testing.T) {
