@@ -8,7 +8,7 @@ import (
 	"net/url"
 	"path"
 	"strconv"
-	"github.com/sakana7392/AnkiCard_server/domain"
+	"github.com/sakana7392/AnkiCard_server/repository"
 )
 
 // カードを1件取得
@@ -21,7 +21,7 @@ func getOneCard(w http.ResponseWriter, r *http.Request) (err error) {
 		log.Println(err)
 		return
 	}
-	card, err := getOneCard_DB(id)
+	card, err := repository.GetOneCard_DB(id)
 	if err != nil {
 		log.Println(err)
 		return
@@ -45,7 +45,7 @@ func createNewCard(w http.ResponseWriter, r *http.Request) (err error) {
 
 	// query -> map[a:[AAA] b:[BBB] c:[CCC] d:[DDD]]
 
-	var card Card
+	var card domain.Card
 
 	card.AnswerText = u["answerText"][0]
 	card.QuestionText = u["questionText"][0]
@@ -53,7 +53,7 @@ func createNewCard(w http.ResponseWriter, r *http.Request) (err error) {
 	card.LearningLevel = 0
 	card.TagId = 1
 
-	err = createNewCard_DB(&card)
+	err = repository.CreateNewCard_DB(&card)
 	if err != nil {
 		fmt.Println("failed to create new card")
 		fmt.Println(err)
@@ -77,7 +77,7 @@ func deleteOneCard(w http.ResponseWriter, r *http.Request) (err error) {
 		log.Println(err)
 		return
 	}
-	err = deleteOneCard_DB(id)
+	err = repository.DeleteOneCard_DB(id)
 	if err != nil {
 		fmt.Println("failed to create new card")
 		fmt.Println(err)
@@ -98,7 +98,7 @@ func updateOneCard(w http.ResponseWriter, r *http.Request) (err error) {
 
 	// query -> map[a:[AAA] b:[BBB] c:[CCC] d:[DDD]]
 
-	var card Card
+	var card domain.Card
 
 	card.AnswerText = u["answerText"][0]
 	card.QuestionText = u["questionText"][0]
@@ -110,7 +110,7 @@ func updateOneCard(w http.ResponseWriter, r *http.Request) (err error) {
 	card.LearningLevel = 0
 	card.TagId = 1
 
-	err = updateOneCard_DB(&card)
+	err = repository.UpdateOneCard_DB(&card)
 	if err != nil {
 		fmt.Println("failed to update card")
 		fmt.Println(err)
