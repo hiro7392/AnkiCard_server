@@ -4,5 +4,3 @@ github.com/sakana7392/AnkiCard_server/domain v0.0.0-20220701005301-fe748a022936 
 github.com/sakana7392/AnkiCard_server/domain v0.0.0-20220701005301-fe748a022936/go.mod h1:fd3Z1N4+xkjKkVxoRPM1n2WfcuOnPLNObIvmHUAORY0=
 github.com/sakana7392/AnkiCard_server/infra v0.0.0-20220701005301-fe748a022936 h1:O6svNPOWIbPsJrfbvVbui1a5oX1cg1MjElIXebi4/+I=
 github.com/sakana7392/AnkiCard_server/infra v0.0.0-20220701005301-fe748a022936/go.mod h1:pu+fhsADrxY1SCNW/VpeH6uA1fzVnAia8LKGjU85YN4=
-github.com/sakana7392/AnkiCard_server/repository v0.0.0-20220701014141-25b86d4b2eeb h1:a17updbPzC8cWcPChhwsyKjHsTbGMQnXpd4oPWWCvyQ=
-github.com/sakana7392/AnkiCard_server/repository v0.0.0-20220701014141-25b86d4b2eeb/go.mod h1:StoHG4r57qY+gUdMTJKgb8YawSf1tQ/n9sH6+tW9Knk=
