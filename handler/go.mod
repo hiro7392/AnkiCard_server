@@ -8,3 +8,5 @@ require (
 )
 
 replace github.com/sakana7392/AnkiCard_server/repository => ../repository
+
+replace github.com/sakana7392/AnkiCard_server/domain => ../domain
