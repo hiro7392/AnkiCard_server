@@ -35,7 +35,7 @@ func HandleUserRequest(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
-// カードを1件取得
+// ユーザ情報を1件取得
 func GetOneUser(w http.ResponseWriter, r *http.Request) (err error) {
 	w.Header().Set("Access-Control-Allow-Methods", "GET")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
@@ -60,7 +60,7 @@ func GetOneUser(w http.ResponseWriter, r *http.Request) (err error) {
 	return
 }
 
-//	カードを新規作成
+//	ユーザを新規作成
 func CreateNewUser(w http.ResponseWriter, r *http.Request) (err error) {
 	w.Header().Set("Access-Control-Allow-Methods", "POST")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
@@ -90,7 +90,7 @@ func CreateNewUser(w http.ResponseWriter, r *http.Request) (err error) {
 	return err
 }
 
-//既存のカードを一件削除
+//	既存のユーザを一件削除
 func DeleteOneUser(w http.ResponseWriter, r *http.Request) (err error) {
 	w.Header().Set("Access-Control-Allow-Methods", "DELETE")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
