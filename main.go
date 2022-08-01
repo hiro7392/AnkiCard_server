@@ -2,11 +2,8 @@ package main
 
 import (
 	"net/http"
-
 	"github.com/sakana7392/AnkiCard_server/handler"
 )
-
-
 
 func main() {
 	var localURL string = "127.0.0.1:8080"
