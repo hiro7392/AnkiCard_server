@@ -13,6 +13,28 @@ import (
 	"github.com/sakana7392/AnkiCard_server/repository"
 )
 
+func HandleCardRequest(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	switch r.Method {
+	case "GET":
+		err = handler.GetOneCard(w, r)
+	case "POST":
+		err = handler.CreateNewCard(w, r)
+	case "PUT":
+		err = handler.UpdateOneCard(w, r)
+	case "DELETE":
+		err = handler.DeleteOneCard(w, r)
+	}
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(200)
+	return
+}
+
 // カードを1件取得
 func GetOneCard(w http.ResponseWriter, r *http.Request) (err error) {
 	w.Header().Set("Access-Control-Allow-Methods", "GET")
