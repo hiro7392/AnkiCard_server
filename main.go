@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/http"
+
 	"github.com/sakana7392/AnkiCard_server/handler"
 )
 
@@ -13,7 +14,7 @@ func main() {
 		Addr: URL,
 	}
 	//カードのCRUD処理
-	http.HandleFunc("/card/", HandleCardRequest)
+	http.HandleFunc("/card/", handler.HandleCardRequest)
 
 	server.ListenAndServe()
 }
