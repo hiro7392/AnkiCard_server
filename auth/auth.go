@@ -1,9 +1,10 @@
 package auth
 
 import (
+	"fmt"
+	"log"
 	"net/http"
 	"os"
-	"time"
 
 	jwtmiddleware "github.com/auth0/go-jwt-middleware"
 	jwt "github.com/form3tech-oss/jwt-go"
@@ -12,22 +13,31 @@ import (
 // GetTokenHandler get token
 var GetTokenHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
-    // headerのセット
+	// headerのセット
 	token := jwt.New(jwt.SigningMethodHS256)
 
-    // claimsのセット
+	// claimsのセット
 	claims := token.Claims.(jwt.MapClaims)
-	claims["admin"] = true
-	claims["sub"] = "54546557354"
-	claims["name"] = "taro"
-	claims["iat"] = time.Now().Unix()
-	claims["exp"] = time.Now().Add(time.Hour * 24).Unix()
+	// claims["admin"] = true
+	// claims["sub"] = "54546557354"
+	// claims["name"] = "taro"
+	// claims["iat"] = time.Now().Unix()
+	// claims["exp"] = time.Now().Add(time.Hour * 24).Unix()
+	claims["email"] = "example@gmail.com"
+	claims["password"] = "password"
 
-    // 電子署名
+	// 電子署名
 	tokenString, _ := token.SignedString([]byte(os.Getenv("SIGNINGKEY")))
 
-    // JWTを返却
+	// JWTを返却
 	w.Write([]byte(tokenString))
+	// サーバだけが知り得るSecretでこれをParseする
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		return []byte(os.Getenv("SIGNINGKEY")), nil
+	})
+	fmt.Println("token[email]=", token.Claims.(jwt.MapClaims)["email"]) //emailを表示
+	// Parseメソッドを使うと、Claimsはmapとして得られる
+	log.Println(token.Claims, err)
 })
 
 // JwtMiddleware check token
