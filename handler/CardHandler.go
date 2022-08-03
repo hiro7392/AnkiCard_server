@@ -9,12 +9,14 @@ import (
 	"path"
 	"strconv"
 
+	"github.com/gorilla/mux"
 	"github.com/sakana7392/AnkiCard_server/domain"
 	"github.com/sakana7392/AnkiCard_server/repository"
 )
 
 func HandleCardRequest(w http.ResponseWriter, r *http.Request) {
 
+	fmt.Println("HandlerCardRequest")
 	var err error
 	switch r.Method {
 	case "GET":
@@ -40,21 +42,28 @@ func GetOneCard(w http.ResponseWriter, r *http.Request) (err error) {
 	w.Header().Set("Access-Control-Allow-Methods", "GET")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	id, err := strconv.Atoi(path.Base(r.URL.Path))
+
+	vars := mux.Vars(r)
+	id := vars["id"]
+
+	idInt, err := strconv.Atoi(id)
+	fmt.Println("id =", idInt)
 	if err != nil {
 		log.Println(err)
 		return
 	}
-	card, err := repository.GetOneCard_DB(id)
+	card, err := repository.GetOneCard_DB(idInt)
 	if err != nil {
 		log.Println(err)
 		return
 	}
+	fmt.Println(card)
 	output, err := json.MarshalIndent(&card, "", "\t")
 	if err != nil {
 		log.Println(err)
 		return
 	}
+	fmt.Println(output)
 
 	w.Write(output)
 	return

@@ -34,6 +34,7 @@ func HandleUserRequest(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(200)
 	return
 }
+var privateCardFunc=http.HandlerFunc(HandleCardRequest)
 
 // ユーザ情報を1件取得
 func GetOneUser(w http.ResponseWriter, r *http.Request) (err error) {

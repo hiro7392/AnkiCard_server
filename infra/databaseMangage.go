@@ -11,7 +11,7 @@ var Db *sql.DB
 
 func init() {
 	var err error
-	Db, err = sql.Open("mysql", "root@/AnkiCard?parseTime=true")
+	Db, err = sql.Open("mysql", "root:mysql@/AnkiCard?parseTime=true")
 
 	if err != nil {
 		panic(err.Error())
