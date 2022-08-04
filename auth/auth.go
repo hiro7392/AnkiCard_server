@@ -9,6 +9,7 @@ import (
 
 	jwtmiddleware "github.com/auth0/go-jwt-middleware"
 	jwt "github.com/form3tech-oss/jwt-go"
+	"github.com/sakana7392/AnkiCard_server/domain/model"
 )
 
 // GetTokenHandler get token
@@ -19,10 +20,15 @@ var GetTokenHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Reque
 	// headerのセット
 	token := jwt.New(jwt.SigningMethodHS256)
 
+	//	クエリパラメータからemailとpasswordを取得
+	u, _ := url.ParseQuery(r.URL.RawQuery)
+	receivedEmail := u.Get("email")
+	receivedPassword := u.Get("password")
+
+	//	emailとpasswordが存在するかチェック
+
 	// claimsのセット
 	claims := token.Claims.(jwt.MapClaims)
-	u, _ := url.ParseQuery(r.URL.RawQuery)
-
 	claims["email"] = u["email"][0]
 	claims["password"] = u["password"][0]
 
@@ -39,6 +45,16 @@ var GetTokenHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Reque
 	// Parseメソッドを使うと、Claimsはmapとして得られる
 	log.Println(token.Claims, err)
 })
+
+//	emaliとpasswordが存在するかチェック
+func checkEmailAndPassword(email, password string) bool {
+
+	var User model.User
+
+	fmt.Println(User)
+
+	return true
+}
 
 // JwtMiddleware check token
 var JwtMiddleware = jwtmiddleware.New(jwtmiddleware.Options{
