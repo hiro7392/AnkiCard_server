@@ -5,4 +5,5 @@ type User struct {
 	UserName       int
 	NextQuestionId int
 	UserLevel      int
+	Password       string
 }

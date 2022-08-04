@@ -1,5 +1,5 @@
 INSERT INTO users
-(customer_name,user_level,created_at,updated_at) 
+(user_name,user_level,created_at,updated_at) 
 VALUES("userB",0,now(),now());
 
 
