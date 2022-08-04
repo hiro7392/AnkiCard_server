@@ -8,6 +8,7 @@ var TestUserData [3]model.User = [3]model.User{
 		UserName:       "sakana",
 		NextQuestionId: 3,
 		UserLevel:      1,
+		Email:          "hiromiimkw@gmail.com",
 		Password:       "password",
 	},
 	{
@@ -15,6 +16,7 @@ var TestUserData [3]model.User = [3]model.User{
 		UserName:       "sakana2",
 		NextQuestionId: 5,
 		UserLevel:      2,
+		Email:          "sakana2w@gmail.com",
 		Password:       "password2",
 	},
 	{
@@ -22,6 +24,7 @@ var TestUserData [3]model.User = [3]model.User{
 		UserName:       "sakana3",
 		NextQuestionId: 4,
 		UserLevel:      1,
+		Email:          "sakana3@gmail.com",
 		Password:       "password3",
 	},
 }

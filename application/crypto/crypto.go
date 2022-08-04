@@ -1,6 +1,8 @@
 package crypto
 
 import (
+	"fmt"
+
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -12,5 +14,7 @@ func PasswordEncrypt(password string) (string, error) {
 
 // 暗号(Hash)と入力された平パスワードの比較
 func CompareHashAndPassword(hash, password string) error {
+	fmt.Println("hash:", hash)
+	fmt.Println("pass:", password)
 	return bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
 }

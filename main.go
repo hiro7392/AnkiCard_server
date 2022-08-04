@@ -16,15 +16,14 @@ type post struct {
 }
 
 func main() {
-	
 
 	r := mux.NewRouter()
-
+	//service.InsertTestDate()
 	// 認証
 	r.Handle("/auth", auth.GetTokenHandler)
 
 	// カードのCRUD処理
-	
+
 	// 認証あり
 	r.Handle("/private/card/{id}", auth.JwtMiddleware.Handler(cardAuth))
 	// 認証なし

@@ -7,9 +7,9 @@ import (
 	"net/url"
 	"os"
 
-	"github.com/sakana7392/AnkiCard_server/application/service"
 	jwtmiddleware "github.com/auth0/go-jwt-middleware"
 	jwt "github.com/form3tech-oss/jwt-go"
+	"github.com/sakana7392/AnkiCard_server/application/service"
 )
 
 // GetTokenHandler get token
@@ -24,11 +24,15 @@ var GetTokenHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Reque
 	u, _ := url.ParseQuery(r.URL.RawQuery)
 	receivedEmail := u.Get("email")
 	receivedPassword := u.Get("password")
+	
+
 
 	//	emailとpasswordが存在するかチェック
 	if !service.CheckEmailAndPassword(receivedEmail, receivedPassword) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
+	} else {
+		fmt.Println("emailとユーザが存在します")
 	}
 
 	// claimsのセット
