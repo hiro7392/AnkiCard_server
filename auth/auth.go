@@ -10,6 +10,7 @@ import (
 	jwtmiddleware "github.com/auth0/go-jwt-middleware"
 	jwt "github.com/form3tech-oss/jwt-go"
 	"github.com/sakana7392/AnkiCard_server/domain/model"
+	"github.com/sakana7392/AnkiCard_server/application/service"
 )
 
 // GetTokenHandler get token
@@ -26,6 +27,10 @@ var GetTokenHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Reque
 	receivedPassword := u.Get("password")
 
 	//	emailとpasswordが存在するかチェック
+	if(!service.checkEmailAndPassword(receivedEmail, receivedPassword)) {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
 
 	// claimsのセット
 	claims := token.Claims.(jwt.MapClaims)
@@ -46,15 +51,6 @@ var GetTokenHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Reque
 	log.Println(token.Claims, err)
 })
 
-//	emaliとpasswordが存在するかチェック
-func checkEmailAndPassword(email, password string) bool {
-
-	var User model.User
-
-	fmt.Println(User)
-
-	return true
-}
 
 // JwtMiddleware check token
 var JwtMiddleware = jwtmiddleware.New(jwtmiddleware.Options{

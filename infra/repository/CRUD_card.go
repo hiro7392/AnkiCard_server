@@ -4,12 +4,13 @@ import (
 	"fmt"
 	"log"
 	"time"
+
+	"github.com/sakana7392/AnkiCard_server/domain/model"
 	"github.com/sakana7392/AnkiCard_server/infra"
-	"github.com/sakana7392/AnkiCard_server/domain"
 )
 
 // 1件取得
-func GetOneCard_DB(cardId int) (card domain.Card, err error) {
+func GetOneCard_DB(cardId int) (card model.Card, err error) {
 
 	rows, err := infra.Db.Query("SELECT card_id,question_text,answer_text FROM cards WHERE card_id=?", cardId)
 	for rows.Next() {
@@ -23,7 +24,7 @@ func GetOneCard_DB(cardId int) (card domain.Card, err error) {
 }
 
 //	1件新規作成
-func CreateNewCard_DB(card *domain.Card) (err error) {
+func CreateNewCard_DB(card *model.Card) (err error) {
 	var t = time.Now()
 	const layout2 = "2006-01-02 15:04:05"
 
@@ -45,7 +46,7 @@ func DeleteOneCard_DB(cardId int) (err error) {
 }
 
 //1件更新
-func UpdateOneCard_DB(card *domain.Card) (err error) {
+func UpdateOneCard_DB(card *model.Card) (err error) {
 	var t = time.Now()
 	const layout2 = "2006-01-02 15:04:05"
 	//更新される可能性があるのは、問題文、答え、タグIDのいずれか
