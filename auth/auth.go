@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"net/url"
 	"os"
 
 	jwtmiddleware "github.com/auth0/go-jwt-middleware"
@@ -12,19 +13,18 @@ import (
 
 // GetTokenHandler get token
 var GetTokenHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-
+	w.Header().Set("Access-Control-Allow-Methods", "POST")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	// headerのセット
 	token := jwt.New(jwt.SigningMethodHS256)
 
 	// claimsのセット
 	claims := token.Claims.(jwt.MapClaims)
-	// claims["admin"] = true
-	// claims["sub"] = "54546557354"
-	// claims["name"] = "taro"
-	// claims["iat"] = time.Now().Unix()
-	// claims["exp"] = time.Now().Add(time.Hour * 24).Unix()
-	claims["email"] = "example@gmail.com"
-	claims["password"] = "password"
+	u, _ := url.ParseQuery(r.URL.RawQuery)
+
+	claims["email"] = u["email"][0]
+	claims["password"] = u["password"][0]
 
 	// 電子署名
 	tokenString, _ := token.SignedString([]byte(os.Getenv("SIGNINGKEY")))
