@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/sakana7392/AnkiCard_server/auth"
+	"github.com/sakana7392/AnkiCard_server/application/auth"
 	"github.com/sakana7392/AnkiCard_server/presentation/handler"
 )
 
