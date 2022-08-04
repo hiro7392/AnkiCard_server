@@ -1,25 +1,27 @@
+package testData
+
 import "github.com/sakana7392/AnkiCard_server/domain/model"
 
-var TestUserData User[]=[]User{
-    {
-        userId: 1,
-        userName: "sakana",
-        NextQuestionId,3,
-        userLevel: 1,
-        password: "password",
-    },
-    {
-        userId: 2,
-        userName: "sakana2",
-        NextQuestionId,5,
-        userLevel: 2,
-        password: "password2",
-    },
-    {
-        userId: 3,
-        userName: "sakana3",
-        NextQuestionId,4,
-        userLevel: 1,
-        password: "password3",
-    },
+var TestUserData [3]model.User = [3]model.User{
+	{
+		UserId:         1,
+		UserName:       "sakana",
+		NextQuestionId: 3,
+		UserLevel:      1,
+		Password:       "password",
+	},
+	{
+		UserId:         2,
+		UserName:       "sakana2",
+		NextQuestionId: 5,
+		UserLevel:      2,
+		Password:       "password2",
+	},
+	{
+		UserId:         3,
+		UserName:       "sakana3",
+		NextQuestionId: 4,
+		UserLevel:      1,
+		Password:       "password3",
+	},
 }
