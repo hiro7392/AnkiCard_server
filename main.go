@@ -6,6 +6,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/sakana7392/AnkiCard_server/application/auth"
+	//"github.com/sakana7392/AnkiCard_server/application/service"
 	"github.com/sakana7392/AnkiCard_server/presentation/handler"
 )
 

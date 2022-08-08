@@ -9,7 +9,7 @@ var TestUserData [3]model.User = [3]model.User{
 		NextQuestionId: 3,
 		UserLevel:      1,
 		Email:          "hiromiimkw@gmail.com",
-		Password:       "password",
+		Password:       "pass",
 	},
 	{
 		UserId:         2,

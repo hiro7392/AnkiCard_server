@@ -21,11 +21,17 @@ var GetTokenHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Reque
 	token := jwt.New(jwt.SigningMethodHS256)
 
 	//	クエリパラメータからemailとpasswordを取得
-	u, _ := url.ParseQuery(r.URL.RawQuery)
+	u, Er := url.ParseQuery(r.URL.RawQuery)
+	if Er !=nil{
+		log.Println(Er)
+		return
+	}else{
+		fmt.Println("email:", u.Get("email"))
+		fmt.Println("password:", u.Get("password"))
+	}
 	receivedEmail := u.Get("email")
 	receivedPassword := u.Get("password")
 	
-
 
 	//	emailとpasswordが存在するかチェック
 	if !service.CheckEmailAndPassword(receivedEmail, receivedPassword) {
@@ -45,13 +51,14 @@ var GetTokenHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Reque
 
 	// JWTを返却
 	w.Write([]byte(tokenString))
+	
 	// サーバだけが知り得るSecretでこれをParseする
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		return []byte(os.Getenv("SIGNINGKEY")), nil
 	})
-	fmt.Println("token[email]=", token.Claims.(jwt.MapClaims)["email"]) //emailを表示
-	// Parseメソッドを使うと、Claimsはmapとして得られる
-	log.Println(token.Claims, err)
+	if err != nil {
+		fmt.Println("jwt.Parse error ",err)
+	}
 })
 
 // JwtMiddleware check token

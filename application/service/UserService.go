@@ -17,16 +17,13 @@ func CheckEmailAndPassword(email, password string) bool {
 	if err != nil {
 		log.Println(err)
 		return false
+	}else{
+		fmt.Println("password:", password)
 	}
-	// フロントから送られてきたパスワードとDBに保存されているパスワードを比較
-	cryptedPassword, err := crypto.PasswordEncrypt(password)
-	if err != nil {
-		log.Println(err)
-		fmt.Println(err)
-		return false
-	}
-	fmt.Println("cryptedPassword:", cryptedPassword)
-	if crypto.CompareHashAndPassword(cryptedPassword,User.Password) != nil {
+	
+	// passwordが一致するかチェック
+	err = crypto.CompareHashAndPassword(User.Password,password)
+	if  err != nil {
 		log.Println(err)
 		fmt.Println(err)
 		return false
