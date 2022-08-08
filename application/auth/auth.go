@@ -6,11 +6,16 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"encoding/json"
 
 	jwtmiddleware "github.com/auth0/go-jwt-middleware"
 	jwt "github.com/form3tech-oss/jwt-go"
 	"github.com/sakana7392/AnkiCard_server/application/service"
 )
+type AuthResponse struct {
+	Token string `json:"token"`
+	UserName string `json:"userName"`
+}
 
 // GetTokenHandler get token
 var GetTokenHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -34,11 +39,15 @@ var GetTokenHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Reque
 	
 
 	//	emailとpasswordが存在するかチェック
-	if !service.CheckEmailAndPassword(receivedEmail, receivedPassword) {
+	var emailAndPassIsTrueCorrect bool
+	var userName string
+	emailAndPassIsTrueCorrect, userName = service.CheckEmailAndPassword(receivedEmail, receivedPassword)
+	if !emailAndPassIsTrueCorrect {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	} else {
 		fmt.Println("emailとユーザが存在します")
+		fmt.Println("userName:", userName)
 	}
 
 	// claimsのセット
@@ -49,11 +58,22 @@ var GetTokenHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Reque
 	// 電子署名
 	tokenString, _ := token.SignedString([]byte(os.Getenv("SIGNINGKEY")))
 
+	// レスポンスの作成
+	response := AuthResponse{
+		Token: tokenString,
+		UserName: userName,
+	}
+	output, err := json.MarshalIndent(&response, "", "\t")
+	if err != nil {
+		log.Println(err)
+		return
+	}
 	// JWTを返却
-	w.Write([]byte(tokenString))
-	
+	//w.Write([]byte(tokenString))
+	w.Write(output)
+
 	// サーバだけが知り得るSecretでこれをParseする
-	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+	token, err = jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		return []byte(os.Getenv("SIGNINGKEY")), nil
 	})
 	if err != nil {

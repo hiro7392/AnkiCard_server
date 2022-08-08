@@ -10,13 +10,16 @@ import (
 )
 
 //	emaliとpasswordが存在するかチェック
-func CheckEmailAndPassword(email, password string) bool {
+func CheckEmailAndPassword(email, password string) (result bool, userName string) {
 
+	//	結果とユーザ名を返す
+	result=false
+	userName=""
 	// emailが一致するユーザを取得
 	User, err := repository.GetOneUserByEmail_DB(email)
 	if err != nil {
 		log.Println(err)
-		return false
+		return
 	}else{
 		fmt.Println("password:", password)
 	}
@@ -26,10 +29,11 @@ func CheckEmailAndPassword(email, password string) bool {
 	if  err != nil {
 		log.Println(err)
 		fmt.Println(err)
-		return false
+		return
 	}
-
-	return true
+	result=true
+	userName=User.UserName
+	return
 }
 
 //	新規作成時にemailとパスワードをチェック
