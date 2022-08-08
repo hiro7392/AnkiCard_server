@@ -2,7 +2,7 @@ package testData
 
 import "github.com/sakana7392/AnkiCard_server/domain/model"
 
-var TestUserData [3]model.User = [3]model.User{
+var TestUserData []model.User = []model.User{
 	{
 		UserId:         1,
 		UserName:       "sakana",
@@ -26,5 +26,13 @@ var TestUserData [3]model.User = [3]model.User{
 		UserLevel:      1,
 		Email:          "sakana3@gmail.com",
 		Password:       "password3",
+	},
+	{
+		UserId:         3,
+		UserName:       "sakana4",
+		NextQuestionId: 4,
+		UserLevel:      4,
+		Email:          "sakana4@gmail.com",
+		Password:       "password4",
 	},
 }
