@@ -10,11 +10,11 @@ import (
 )
 
 // 1件取得
-func GetOneCard_DB(cardId int) (card model.Card, err error) {
+func GetOneTag_DB(TagId int) (tag model.Tag, err error) {
 
-	rows, err := infra.Db.Query("SELECT card_id,question_text,answer_text FROM cards WHERE card_id=?", cardId)
+	rows, err := infra.Db.Query("SELECT tag_id,question_text,answer_text FROM tags WHERE tag_id=?", TagId)
 	for rows.Next() {
-		if err := rows.Scan(&card.CardId, &card.QuestionText, &card.AnswerText); err != nil {
+		if err := rows.Scan(&tag.TagId, &tag.CreatedUserId, &tag.TagName); err != nil {
 			log.Fatal(err)
 			log.Panicln(err)
 		}
@@ -24,29 +24,29 @@ func GetOneCard_DB(cardId int) (card model.Card, err error) {
 }
 
 // 1件新規作成
-func CreateNewCard_DB(card *model.Card) (err error) {
+func CreateNewTag_DB(tag *model.Tag) (err error) {
 	var t = time.Now()
 	const layout2 = "2006-01-02 15:04:05"
 
-	_, err = infra.Db.Query("INSERT INTO cards(card_id,tag_id,created_user_id,learning_level,question_text,answer_text,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?)",
-		card.CardId, card.TagId, card.CreatedUserId, card.LearningLevel, card.QuestionText, card.AnswerText, t.Format(layout2), t.Format(layout2))
+	_, err = infra.Db.Query("INSERT INTO tags(created_user_id,tag_name,created_at,updated_at) VALUES(?,?,?,?)",
+		tag.CreatedUserId, tag.TagName, t.Format(layout2), t.Format(layout2))
 
 	return err
 }
 
 // 1件削除
-func DeleteOneCard_DB(cardId int) (err error) {
-	_, err = infra.Db.Query("DELETE FROM cards WHERE card_id=?", cardId)
+func DeleteOneTag_DB(tagId int) (err error) {
+	_, err = infra.Db.Query("DELETE FROM tags WHERE tag_id=?", tagId)
 	if err != nil {
 		fmt.Println("deltefailed!")
 		log.Panicln(err)
 	}
-	fmt.Println("delete success! card_id=? deleted!", cardId)
+	fmt.Println("delete success! tag_id=? deleted!", tagId)
 	return
 }
 
 // 1件更新
-func UpdateOneCard_DB(card *model.Card) (err error) {
+func UpdateOneTag_DB(card *model.Card) (err error) {
 	var t = time.Now()
 	const layout2 = "2006-01-02 15:04:05"
 	//更新される可能性があるのは、問題文、答え、タグIDのいずれか

@@ -6,7 +6,8 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/sakana7392/AnkiCard_server/application/auth"
-	//"github.com/sakana7392/AnkiCard_server/application/service"
+
+	"github.com/sakana7392/AnkiCard_server/application/service"
 	"github.com/sakana7392/AnkiCard_server/presentation/handler"
 )
 
@@ -19,7 +20,10 @@ type post struct {
 func main() {
 
 	r := mux.NewRouter()
-	//service.InsertTestDate()
+	// テストデータの挿入
+	service.InsertTestUserData()
+	service.InsertTestTagData()
+	service.InsertTestCardData()
 	// 認証
 	r.Handle("/auth", auth.GetTokenHandler)
 

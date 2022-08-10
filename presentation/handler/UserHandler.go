@@ -35,8 +35,6 @@ func HandleUserRequest(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
-var privateCardFunc = http.HandlerFunc(HandleCardRequest)
-
 // ユーザ情報を1件取得
 func GetOneUser(w http.ResponseWriter, r *http.Request) (err error) {
 	w.Header().Set("Access-Control-Allow-Methods", "GET")

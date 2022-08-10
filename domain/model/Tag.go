@@ -1,6 +1,7 @@
 package model
 
 type Tag struct {
-	TagId   int
-	TagName string
+	TagId         int
+	CreatedUserId int
+	TagName       string
 }
