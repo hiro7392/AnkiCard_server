@@ -22,8 +22,7 @@ var GetTokenHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Reque
 	w.Header().Set("Access-Control-Allow-Methods", "POST")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	// headerのセット
-	token := jwt.New(jwt.SigningMethodHS256)
+	
 
 	//	クエリパラメータからemailとpasswordを取得
 	u, Er := url.ParseQuery(r.URL.RawQuery)
@@ -50,6 +49,8 @@ var GetTokenHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Reque
 		fmt.Println("userName:", userName)
 	}
 
+	// headerのセット
+	token := jwt.New(jwt.SigningMethodHS256)
 	// claimsのセット
 	claims := token.Claims.(jwt.MapClaims)
 	claims["email"] = u["email"][0]
