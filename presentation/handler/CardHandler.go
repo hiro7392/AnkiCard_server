@@ -47,7 +47,6 @@ func GetOneCard(w http.ResponseWriter, r *http.Request) (err error) {
 	id := vars["id"]
 
 	idInt, err := strconv.Atoi(id)
-	fmt.Println("id =", idInt)
 	if err != nil {
 		log.Println(err)
 		return
@@ -57,34 +56,33 @@ func GetOneCard(w http.ResponseWriter, r *http.Request) (err error) {
 		log.Println(err)
 		return
 	}
-	fmt.Println(card)
+	fmt.Println("result=", card)
 	output, err := json.MarshalIndent(&card, "", "\t")
 	if err != nil {
 		log.Println(err)
 		return
 	}
-	fmt.Println(output)
 
 	w.Write(output)
 	return
 }
 
-//	カードを新規作成
+// カードを新規作成
 func CreateNewCard(w http.ResponseWriter, r *http.Request) (err error) {
 	w.Header().Set("Access-Control-Allow-Methods", "POST")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	u, _ := url.ParseQuery(r.URL.RawQuery)
-	//fmt.Println(u)
-
-	// query -> map[a:[AAA] b:[BBB] c:[CCC] d:[DDD]]
 
 	var card model.Card
 
+	// クエリパラメータを取得
 	card.AnswerText = u["answerText"][0]
 	card.QuestionText = u["questionText"][0]
-	fmt.Println(card.AnswerText)
+
+	
 	card.LearningLevel = 0
 	card.TagId = 1
+	card.CreatedUserId=2
 
 	err = repository.CreateNewCard_DB(&card)
 	if err != nil {
@@ -99,12 +97,12 @@ func CreateNewCard(w http.ResponseWriter, r *http.Request) (err error) {
 	return err
 }
 
-//既存のカードを一件削除
+// 既存のカードを一件削除
 func DeleteOneCard(w http.ResponseWriter, r *http.Request) (err error) {
 	w.Header().Set("Access-Control-Allow-Methods", "DELETE")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 
-	// query -> map[a:[AAA] b:[BBB] c:[CCC] d:[DDD]]
+	// urlからidを取得
 	id, err := strconv.Atoi(path.Base(r.URL.Path))
 	if err != nil {
 		log.Println(err)
@@ -117,13 +115,14 @@ func DeleteOneCard(w http.ResponseWriter, r *http.Request) (err error) {
 		w.WriteHeader(500)
 		err.Error()
 	} else {
+		fmt.Println("success to delete card id= ", id)
 		w.WriteHeader(200)
 	}
 
 	return err
 }
 
-//	カード情報を更新
+// カード情報を更新
 func UpdateOneCard(w http.ResponseWriter, r *http.Request) (err error) {
 	w.Header().Set("Access-Control-Allow-Methods", "PUT")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
@@ -133,9 +132,13 @@ func UpdateOneCard(w http.ResponseWriter, r *http.Request) (err error) {
 
 	var card model.Card
 
+	// クエリパラメータを取得
+	vars := mux.Vars(r)
+	id := vars["id"]
+
 	card.AnswerText = u["answerText"][0]
 	card.QuestionText = u["questionText"][0]
-	card.CardId, err = strconv.Atoi(u["cardId"][0])
+	card.CardId, err = strconv.Atoi(id)
 	if err != nil {
 		log.Println(err)
 		return
@@ -148,7 +151,6 @@ func UpdateOneCard(w http.ResponseWriter, r *http.Request) (err error) {
 		fmt.Println("failed to update card")
 		fmt.Println(err)
 		w.WriteHeader(500)
-		err.Error()
 	} else {
 		w.WriteHeader(200)
 	}

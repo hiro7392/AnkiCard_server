@@ -12,9 +12,9 @@ import (
 // 1件取得
 func GetOneCard_DB(cardId int) (card model.Card, err error) {
 
-	rows, err := infra.Db.Query("SELECT card_id,question_text,answer_text FROM cards WHERE card_id=?", cardId)
+	rows, err := infra.Db.Query("SELECT card_id,tag_id,created_user_id,learning_level,question_text,answer_text FROM cards WHERE card_id=?", cardId)
 	for rows.Next() {
-		if err := rows.Scan(&card.CardId, &card.QuestionText, &card.AnswerText); err != nil {
+		if err := rows.Scan(&card.CardId, &card.TagId, &card.CreatedUserId, &card.LearningLevel, &card.QuestionText, &card.AnswerText); err != nil {
 			log.Fatal(err)
 			log.Panicln(err)
 		}
@@ -28,8 +28,8 @@ func CreateNewCard_DB(card *model.Card) (err error) {
 	var t = time.Now()
 	const layout2 = "2006-01-02 15:04:05"
 
-	_, err = infra.Db.Query("INSERT INTO cards(card_id,tag_id,created_user_id,learning_level,question_text,answer_text,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?)",
-		card.CardId, card.TagId, card.CreatedUserId, card.LearningLevel, card.QuestionText, card.AnswerText, t.Format(layout2), t.Format(layout2))
+	_, err = infra.Db.Query("INSERT INTO cards(tag_id,created_user_id,learning_level,question_text,answer_text,created_at,updated_at) VALUES(?,?,?,?,?,?,?)",
+		card.TagId, card.CreatedUserId, card.LearningLevel, card.QuestionText, card.AnswerText, t.Format(layout2), t.Format(layout2))
 
 	return err
 }

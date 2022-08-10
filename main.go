@@ -11,28 +11,22 @@ import (
 	"github.com/sakana7392/AnkiCard_server/presentation/handler"
 )
 
-type post struct {
-	Title string `json:"title"`
-	Tag   string `json:"tag"`
-	URL   string `json:"url"`
+func insertTestDate() {
+	service.InsertTestUserData()
+	service.InsertTestTagData()
+	service.InsertTestCardData()
 }
-
 func main() {
 
 	r := mux.NewRouter()
 	// テストデータの挿入
-	service.InsertTestUserData()
-	service.InsertTestTagData()
-	service.InsertTestCardData()
-	// 認証
+	//insertTestDate()
+
+	// JWTで認証。Bearer Tokenを発行する
 	r.Handle("/auth", auth.GetTokenHandler)
 
 	// カードのCRUD処理
-
-	// 認証あり
-	r.Handle("/private/card/{id}", auth.JwtMiddleware.Handler(cardAuth))
-	// 認証なし
-	r.Handle("/card/{id}", cardwithoutAuth)
+	r.Handle("/card/{id}", auth.JwtMiddleware.Handler(cardAuth))
 
 	//サーバー起動
 	if err := http.ListenAndServe(":8080", r); err != nil {
@@ -42,13 +36,3 @@ func main() {
 }
 
 var cardAuth = http.HandlerFunc(handler.HandleCardRequest)
-var cardwithoutAuth = http.HandlerFunc(handler.HandleCardRequest)
-
-// var private = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-// 	post := &post{
-// 		Title: "VGolangとGoogle Cloud Vision APIで画像から文字認識するCLIを速攻でつくる",
-// 		Tag:   "Go",
-// 		URL:   "https://qiita.com/po3rin/items/bf439424e38757c1e69b",
-// 	}
-// 	json.NewEncoder(w).Encode(post)
-// })
