@@ -10,6 +10,7 @@ import (
 	"strconv"
 
 	"github.com/gorilla/mux"
+	"github.com/sakana7392/AnkiCard_server/application/auth"
 	"github.com/sakana7392/AnkiCard_server/domain/model"
 	"github.com/sakana7392/AnkiCard_server/infra/repository"
 )
@@ -51,6 +52,15 @@ func GetOneCard(w http.ResponseWriter, r *http.Request) (err error) {
 		log.Println(err)
 		return
 	}
+	tokenString := r.Header.Get("Authorization")
+	token:=tokenString[7:]
+	user, err := auth.GetUserFromBearerToken(token)
+	if err != nil {
+		log.Println(err)
+	}
+	fmt.Println("user info from token email =", user.UserName, "id =", user.UserId)
+
+	
 	card, err := repository.GetOneCard_DB(idInt)
 	if err != nil {
 		log.Println(err)
@@ -79,10 +89,9 @@ func CreateNewCard(w http.ResponseWriter, r *http.Request) (err error) {
 	card.AnswerText = u["answerText"][0]
 	card.QuestionText = u["questionText"][0]
 
-	
 	card.LearningLevel = 0
 	card.TagId = 1
-	card.CreatedUserId=2
+	card.CreatedUserId = 2
 
 	err = repository.CreateNewCard_DB(&card)
 	if err != nil {

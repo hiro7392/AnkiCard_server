@@ -19,3 +19,14 @@ func GetOneUser_DB(userId int) (user domain.User, err error) {
 
 	return
 }
+
+func getUserIdFromUsername_DB(userName string) (id int, err error) {
+	rows, err := infra.Db.Query("SELECT user_id FROM users WHERE user_name LIKE ?", userName)
+	for rows.Next() {
+		if err := rows.Scan(&id); err != nil {
+			log.Fatal(err)
+			log.Panicln(err)
+		}
+	}
+	return
+}

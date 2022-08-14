@@ -1,19 +1,22 @@
 package auth
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
 	"net/url"
 	"os"
-	"encoding/json"
 
 	jwtmiddleware "github.com/auth0/go-jwt-middleware"
 	jwt "github.com/form3tech-oss/jwt-go"
 	"github.com/sakana7392/AnkiCard_server/application/service"
+	"github.com/sakana7392/AnkiCard_server/domain/model"
 )
+
 type AuthResponse struct {
-	Token string `json:"token"`
+	Token    string `json:"token"`
+	UserId   int    `json:"userId"`
 	UserName string `json:"userName"`
 }
 
@@ -22,30 +25,29 @@ var GetTokenHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Reque
 	w.Header().Set("Access-Control-Allow-Methods", "POST")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	
 
 	//	クエリパラメータからemailとpasswordを取得
 	u, Er := url.ParseQuery(r.URL.RawQuery)
-	if Er !=nil{
+	if Er != nil {
 		log.Println(Er)
 		return
-	}else{
+	} else {
 		fmt.Println("email:", u.Get("email"))
 		fmt.Println("password:", u.Get("password"))
 	}
 	receivedEmail := u.Get("email")
 	receivedPassword := u.Get("password")
-	
 
 	//	emailとpasswordが存在するかチェック
 	var emailAndPassIsTrueCorrect bool
 	var userName string
-	emailAndPassIsTrueCorrect, userName = service.CheckEmailAndPassword(receivedEmail, receivedPassword)
+	emailAndPassIsTrueCorrect, userId, userName := service.CheckEmailAndPassword(receivedEmail, receivedPassword)
 	if !emailAndPassIsTrueCorrect {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	} else {
 		fmt.Println("emailとユーザが存在します")
+		fmt.Println("userId:", userId)
 		fmt.Println("userName:", userName)
 	}
 
@@ -55,13 +57,16 @@ var GetTokenHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Reque
 	claims := token.Claims.(jwt.MapClaims)
 	claims["email"] = u["email"][0]
 	claims["password"] = u["password"][0]
+	claims["userId"] = userId
+	claims["userName"] = userName
 
 	// 電子署名
 	tokenString, _ := token.SignedString([]byte(os.Getenv("SIGNINGKEY")))
 
 	// レスポンスの作成
 	response := AuthResponse{
-		Token: tokenString,
+		Token:    tokenString,
+		UserId:   userId,
 		UserName: userName,
 	}
 	output, err := json.MarshalIndent(&response, "", "\t")
@@ -73,12 +78,13 @@ var GetTokenHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Reque
 	//w.Write([]byte(tokenString))
 	w.Write(output)
 
-	// サーバだけが知り得るSecretでこれをParseする
 	token, err = jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		return []byte(os.Getenv("SIGNINGKEY")), nil
 	})
+	fmt.Println("token:", token)
+	fmt.Println("token.Claims:", token.Claims)
 	if err != nil {
-		fmt.Println("jwt.Parse error ",err)
+		fmt.Println("jwt.Parse error ", err)
 	}
 })
 
@@ -89,3 +95,27 @@ var JwtMiddleware = jwtmiddleware.New(jwtmiddleware.Options{
 	},
 	SigningMethod: jwt.SigningMethodHS256,
 })
+
+// サーバだけが知り得るSecretでこれをParseする
+func Decode(tokenString string) (jwt.MapClaims, error) {
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		return []byte(os.Getenv("SIGNINGKEY")), nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	return token.Claims.(jwt.MapClaims), nil
+}
+func GetUserFromBearerToken(bearerToken string) (user model.User, err error) {
+
+	token, err := Decode(bearerToken)
+	if err != nil {
+		fmt.Println("decode failed")
+		log.Println()
+		return
+	}
+	user.UserId = int(token["userId"].(float64))
+	user.UserName = token["userName"].(string)
+
+	return
+}
