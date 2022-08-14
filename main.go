@@ -11,13 +11,14 @@ import (
 	"github.com/sakana7392/AnkiCard_server/presentation/handler"
 )
 
-func insertTestDate() {
-	service.InsertTestUserData()
+func insertTestData() {
+	//service.InsertTestUserData()
 	service.InsertTestTagData()
 	service.InsertTestCardData()
 }
 func main() {
 
+	
 	r := mux.NewRouter()
 	// テストデータの挿入
 	//insertTestDate()
@@ -28,6 +29,9 @@ func main() {
 	// カードのCRUD処理
 	r.Handle("/card/{id}", auth.JwtMiddleware.Handler(cardAuth))
 
+	// ユーザを認証した上でのカードの処理
+	r.Handle("/private/card/{id}", auth.JwtMiddleware.Handler(CustomCardRequest))
+
 	//サーバー起動
 	if err := http.ListenAndServe(":8080", r); err != nil {
 		log.Fatal("ListenAndServe:", err)
@@ -36,3 +40,4 @@ func main() {
 }
 
 var cardAuth = http.HandlerFunc(handler.HandleCardRequest)
+var CustomCardRequest = http.HandlerFunc(handler.HandleCustomCardRequest)
