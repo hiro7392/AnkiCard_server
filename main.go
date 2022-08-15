@@ -18,10 +18,9 @@ func insertTestData() {
 }
 func main() {
 
-	
 	r := mux.NewRouter()
 	// テストデータの挿入
-	//insertTestDate()
+	//	insertTestData()
 
 	// JWTで認証。Bearer Tokenを発行する
 	r.Handle("/auth", auth.GetTokenHandler)

@@ -17,6 +17,15 @@ import (
 func HandleCardRequest(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Println("HandlerCardRequest")
+	w.Header().Set("Access-Control-Allow-Headers", "*")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+	
+	//プリフライトリクエストへの応答
+	if r.Method == "OPTIONS" {
+		w.WriteHeader(http.StatusOK)
+		return
+	}
 	var err error
 	switch r.Method {
 	case "GET":
@@ -39,8 +48,6 @@ func HandleCardRequest(w http.ResponseWriter, r *http.Request) {
 
 // カードを1件取得
 func GetOneCard(w http.ResponseWriter, r *http.Request) (err error) {
-	w.Header().Set("Access-Control-Allow-Methods", "GET")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 
 	vars := mux.Vars(r)
@@ -70,8 +77,6 @@ func GetOneCard(w http.ResponseWriter, r *http.Request) (err error) {
 
 // カードを新規作成
 func CreateNewCard(w http.ResponseWriter, r *http.Request) (err error) {
-	w.Header().Set("Access-Control-Allow-Methods", "POST")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
 	u, _ := url.ParseQuery(r.URL.RawQuery)
 
 	var card model.Card
@@ -99,8 +104,6 @@ func CreateNewCard(w http.ResponseWriter, r *http.Request) (err error) {
 
 // 既存のカードを一件削除
 func DeleteOneCard(w http.ResponseWriter, r *http.Request) (err error) {
-	w.Header().Set("Access-Control-Allow-Methods", "DELETE")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
 
 	// urlからidを取得
 	id, err := strconv.Atoi(path.Base(r.URL.Path))
@@ -124,8 +127,6 @@ func DeleteOneCard(w http.ResponseWriter, r *http.Request) (err error) {
 
 // カード情報を更新
 func UpdateOneCard(w http.ResponseWriter, r *http.Request) (err error) {
-	w.Header().Set("Access-Control-Allow-Methods", "PUT")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
 	u, _ := url.ParseQuery(r.URL.RawQuery)
 
 	// query -> map[a:[AAA] b:[BBB] c:[CCC] d:[DDD]]
