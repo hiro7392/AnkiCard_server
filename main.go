@@ -12,7 +12,7 @@ import (
 )
 
 func insertTestData() {
-	//service.InsertTestUserData()
+	service.InsertTestUserData()
 	service.InsertTestTagData()
 	service.InsertTestCardData()
 }
@@ -20,7 +20,7 @@ func main() {
 
 	r := mux.NewRouter()
 	// テストデータの挿入
-	//	insertTestData()
+	//insertTestData()
 
 	// JWTで認証。Bearer Tokenを発行する
 	r.Handle("/auth", auth.GetTokenHandler)

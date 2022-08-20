@@ -9,6 +9,15 @@ import (
 
 var Db *sql.DB
 
+type NullableCard struct {
+	CardId        int
+	TagId         sql.NullInt64
+	TagName       sql.NullString
+	CreatedUserId int
+	LearningLevel int
+	QuestionText  string
+	AnswerText    string
+}
 func init() {
 	var err error
 	Db, err = sql.Open("mysql", "root:mysql@/AnkiCard?parseTime=true")

@@ -5,6 +5,7 @@ import "github.com/sakana7392/AnkiCard_server/domain/model"
 var TestCardData []model.Card = []model.Card{
 	{
 		TagId:         1,
+		TagName:       "ネットワーク",
 		CreatedUserId: 1,
 		LearningLevel: 1,
 		QuestionText:  "サンプル問題 TCP/IPプロトコルにおける 3way hand shakeとは?",
@@ -12,6 +13,7 @@ var TestCardData []model.Card = []model.Card{
 	},
 	{
 		TagId:         2,
+		TagName:       "データベース",
 		CreatedUserId: 1,
 		LearningLevel: 1,
 		QuestionText:  "サンプル問題 DBのACID特性とは？",
@@ -19,6 +21,7 @@ var TestCardData []model.Card = []model.Card{
 	},
 	{
 		TagId:         2,
+		TagName:       "データベース",
 		CreatedUserId: 3,
 		LearningLevel: 2,
 		QuestionText:  "外部キー制約とは？",

@@ -28,6 +28,7 @@ FOREIGN KEY (created_user_id) REFERENCES users(user_id)
 CREATE TABLE cards (
 card_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 tag_id INT UNSIGNED DEFAULT 1,
+tag_name VARCHAR(100) NULL,
 created_user_id INT UNSIGNED NOT NULL,
 learning_level INT NOT NULL,
 question_text VARCHAR(200) NOT NULL,
