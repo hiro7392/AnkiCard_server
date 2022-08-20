@@ -31,6 +31,9 @@ func main() {
 	// ユーザを認証した上でのカードの処理
 	r.Handle("/private/card/{id}", auth.JwtMiddleware.Handler(CustomCardRequest))
 
+	// ユーザを認証した上でのタグの処理
+	r.Handle("/private/tag/", auth.JwtMiddleware.Handler(CustomTagRequest))
+
 	//サーバー起動
 	if err := http.ListenAndServe(":8080", r); err != nil {
 		log.Fatal("ListenAndServe:", err)
@@ -40,3 +43,4 @@ func main() {
 
 var cardAuth = http.HandlerFunc(handler.HandleCardRequest)
 var CustomCardRequest = http.HandlerFunc(handler.HandleCustomCardRequest)
+var CustomTagRequest = http.HandlerFunc(handler.HandleCustomTagRequest)
