@@ -90,7 +90,8 @@ func UpdateOneCardLevel(w http.ResponseWriter, r *http.Request) (err error) {
 
 	// クエリパラメータ(levelとカードID)を取得
 	vars := mux.Vars(r)
-	addLevelStr := vars["level"]
+	addLevelStr := r.FormValue("level")
+	println("addLevelStr=", addLevelStr)
 	IdStr := vars["id"]
 
 	addLevelInt, err := strconv.Atoi(addLevelStr)
@@ -104,14 +105,18 @@ func UpdateOneCardLevel(w http.ResponseWriter, r *http.Request) (err error) {
 		return
 	}
 	//	カードのレベルを更新
-	err = repository.UpdateOneCardLevel_DB(addLevelInt, IdInt)
+	card, err := repository.UpdateOneCardLevel_DB(addLevelInt, IdInt)
 	if err != nil {
 		fmt.Println("failed to update card")
 		fmt.Println(err)
 		w.WriteHeader(500)
-	} else {
-		w.WriteHeader(200)
+		return
 	}
-
+	//	jsonにエンコードする
+	output, err := json.MarshalIndent(&card, "", "\t")
+	if err != nil {
+		log.Println(err)
+	}
+	w.Write(output)
 	return err
 }
