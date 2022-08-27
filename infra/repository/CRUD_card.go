@@ -58,3 +58,22 @@ func UpdateOneCard_DB(card *model.Card) (err error) {
 
 	return
 }
+
+func UpdateOneCardLevel_DB(addLevel,cardId int) (err error) {
+	var t = time.Now()
+	const layout2 = "2006-01-02 15:04:05"
+	// まずは既存のカードを取得
+	exitstCard,err:=GetOneCard_DB(cardId)
+	if err != nil {
+		fmt.Println("getting card failed! card_id=", cardId)
+	}
+	//更新される可能性があるのは、問題文、答え、タグIDのいずれか
+	upd, err := infra.Db.Prepare("UPDATE cards SET updated_at=? WHERE card_id=?")
+	if err != nil {
+		fmt.Println("update failed! card_id=", cardId)
+	}
+	upd.Exec(exitstCard.LearningLevel+addLevel, t.Format(layout2), exitstCard.CardId)
+
+	return
+}
+

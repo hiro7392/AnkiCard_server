@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strconv"
 
+	"github.com/gorilla/mux"
 	"github.com/sakana7392/AnkiCard_server/application/auth"
 	"github.com/sakana7392/AnkiCard_server/infra/repository"
 )
@@ -27,16 +29,19 @@ func HandleCustomCardRequest(w http.ResponseWriter, r *http.Request) {
 	}
 	switch r.Method {
 	case "GET":
+		// ユーザIDからそのユーザが作成したカードを取得
 		err = GetAllCardsByUserId(w, r)
 		// case "POST":
 		// 	err = CreateNewCard(w, r)
-		// case "PUT":
-		// 	err = UpdateOneCard(w, r)
+	case "PUT":
+		// カードのレベルを更新
+		err = UpdateOneCardLevel(w, r)
 		// case "DELETE":
 		// 	err = DeleteOneCard(w, r)
 	}
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		fmt.Println(err)
 		return
 	}
 
@@ -78,4 +83,35 @@ func GetAllCardsByUserId(w http.ResponseWriter, r *http.Request) (err error) {
 
 	w.Write(output)
 	return
+}
+
+// カード情報を更新
+func UpdateOneCardLevel(w http.ResponseWriter, r *http.Request) (err error) {
+
+	// クエリパラメータ(levelとカードID)を取得
+	vars := mux.Vars(r)
+	addLevelStr := vars["level"]
+	IdStr := vars["id"]
+
+	addLevelInt, err := strconv.Atoi(addLevelStr)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	IdInt, err := strconv.Atoi(IdStr)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	//	カードのレベルを更新
+	err = repository.UpdateOneCardLevel_DB(addLevelInt, IdInt)
+	if err != nil {
+		fmt.Println("failed to update card")
+		fmt.Println(err)
+		w.WriteHeader(500)
+	} else {
+		w.WriteHeader(200)
+	}
+
+	return err
 }

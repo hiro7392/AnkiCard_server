@@ -29,9 +29,12 @@ func main() {
 	r.Handle("/card/{id}", auth.JwtMiddleware.Handler(cardAuth))
 
 	// ユーザを認証した上でのカードの処理
+
+	r.Path("/private/card/{id:[0-9]+}").Queries("level", "{level}").HandlerFunc(CustomCardRequest).Name("CustomCardRequest")
 	r.Handle("/private/card/{id}", auth.JwtMiddleware.Handler(CustomCardRequest))
 
-	// ユーザを認証した上でのタグの処理
+	r.Path("/private/card/{id:[0-9]+}").Queries("level", "{level}").HandlerFunc(handler.HandleCustomCardRequest).Name("CustomCardRequest")
+
 	r.Handle("/private/tag/", auth.JwtMiddleware.Handler(CustomTagRequest))
 
 	//サーバー起動
