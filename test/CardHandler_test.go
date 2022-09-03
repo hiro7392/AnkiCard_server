@@ -7,8 +7,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
-
-	"github.com/sakana7392/AnkiCard_server/main"
+	"github.com/sakana7392/AnkiCard_server"
 	"github.com/stretchr/testify/assert"
 )
 

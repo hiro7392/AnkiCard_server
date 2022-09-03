@@ -31,13 +31,10 @@ func HandleCustomCardRequest(w http.ResponseWriter, r *http.Request) {
 	case "GET":
 		// ユーザIDからそのユーザが作成したカードを取得
 		err = GetAllCardsByUserId(w, r)
-		// case "POST":
-		// 	err = CreateNewCard(w, r)
 	case "PUT":
 		// カードのレベルを更新
 		err = UpdateOneCardLevel(w, r)
-		// case "DELETE":
-		// 	err = DeleteOneCard(w, r)
+
 	}
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

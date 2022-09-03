@@ -48,3 +48,4 @@ func main() {
 var cardAuth = http.HandlerFunc(handler.HandleCardRequest)
 var CustomCardRequest = http.HandlerFunc(handler.HandleCustomCardRequest)
 var CustomTagRequest = http.HandlerFunc(handler.HandleCustomTagRequest)
+var CardCreateRequest = http.HandlerFunc(handler.HandleCardRequest)
