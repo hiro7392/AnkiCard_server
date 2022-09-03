@@ -6,10 +6,10 @@ import (
 	"log"
 	"net/http"
 	"net/url"
-	"path"
 	"strconv"
 
 	"github.com/gorilla/mux"
+	"github.com/sakana7392/AnkiCard_server/application/auth"
 	"github.com/sakana7392/AnkiCard_server/domain/model"
 	"github.com/sakana7392/AnkiCard_server/infra/repository"
 )
@@ -20,7 +20,7 @@ func HandleCardRequest(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Headers", "*")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-	
+
 	//プリフライトリクエストへの応答
 	if r.Method == "OPTIONS" {
 		w.WriteHeader(http.StatusOK)
@@ -84,10 +84,32 @@ func CreateNewCard(w http.ResponseWriter, r *http.Request) (err error) {
 	// クエリパラメータを取得
 	card.AnswerText = u["answerText"][0]
 	card.QuestionText = u["questionText"][0]
+	TagIdStr := u["tagId"][0]
+	card.TagId, err = strconv.Atoi(TagIdStr)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	// Bearer tokenからユーザ情報を取得
+	tokenString := r.Header.Get("Authorization")
+	token := tokenString[7:]
+	user, err := auth.GetUserFromBearerToken(token)
+	if err != nil {
+		log.Println(err)
+	}
+	
 
+	card.CreatedUserId = user.UserId
+
+	// tagNameをtagIdから取得
+	tag, err := repository.GetOneTag_DB(card.TagId)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	card.TagName = tag.TagName
 	card.LearningLevel = 0
-	card.TagId = 1
-	card.CreatedUserId = 2
+	fmt.Println("card.TagName =", card.TagName)
 
 	err = repository.CreateNewCard_DB(&card)
 	if err != nil {
@@ -106,12 +128,16 @@ func CreateNewCard(w http.ResponseWriter, r *http.Request) (err error) {
 func DeleteOneCard(w http.ResponseWriter, r *http.Request) (err error) {
 
 	// urlからidを取得
-	id, err := strconv.Atoi(path.Base(r.URL.Path))
+
+	vars := mux.Vars(r)
+	id := vars["id"]
+
+	idInt, err := strconv.Atoi(id)
 	if err != nil {
 		log.Println(err)
 		return
 	}
-	err = repository.DeleteOneCard_DB(id)
+	err = repository.DeleteOneCard_DB(idInt)
 	if err != nil {
 		fmt.Println("failed to create new card")
 		fmt.Println(err)
@@ -130,7 +156,6 @@ func UpdateOneCard(w http.ResponseWriter, r *http.Request) (err error) {
 	u, _ := url.ParseQuery(r.URL.RawQuery)
 
 	// query -> map[a:[AAA] b:[BBB] c:[CCC] d:[DDD]]
-
 	var card model.Card
 
 	// クエリパラメータを取得
@@ -139,6 +164,7 @@ func UpdateOneCard(w http.ResponseWriter, r *http.Request) (err error) {
 
 	card.AnswerText = u["answerText"][0]
 	card.QuestionText = u["questionText"][0]
+
 	card.CardId, err = strconv.Atoi(id)
 	if err != nil {
 		log.Println(err)

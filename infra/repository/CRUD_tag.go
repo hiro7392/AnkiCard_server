@@ -11,8 +11,8 @@ import (
 
 // 1件取得
 func GetOneTag_DB(TagId int) (tag model.Tag, err error) {
-
-	rows, err := infra.Db.Query("SELECT tag_id,creatted_user_id,tag_name FROM tags WHERE tag_id=?", TagId)
+	fmt.Println("tagId=", TagId)
+	rows, err := infra.Db.Query("SELECT tag_id,created_user_id,tag_name FROM tags WHERE tag_id=?", TagId)
 	for rows.Next() {
 		if err := rows.Scan(&tag.TagId, &tag.CreatedUserId, &tag.TagName); err != nil {
 			log.Fatal(err)

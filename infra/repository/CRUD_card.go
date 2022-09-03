@@ -28,8 +28,8 @@ func CreateNewCard_DB(card *model.Card) (err error) {
 	var t = time.Now()
 	const layout2 = "2006-01-02 15:04:05"
 
-	_, err = infra.Db.Query("INSERT INTO cards(tag_id,created_user_id,learning_level,question_text,answer_text,created_at,updated_at) VALUES(?,?,?,?,?,?,?)",
-		card.TagId, card.CreatedUserId, card.LearningLevel, card.QuestionText, card.AnswerText, t.Format(layout2), t.Format(layout2))
+	_, err = infra.Db.Query("INSERT INTO cards(tag_id,tag_name,created_user_id,learning_level,question_text,answer_text,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?)",
+		card.TagId, card.TagName, card.CreatedUserId, card.LearningLevel, card.QuestionText, card.AnswerText, t.Format(layout2), t.Format(layout2))
 
 	return err
 }
@@ -59,11 +59,11 @@ func UpdateOneCard_DB(card *model.Card) (err error) {
 	return
 }
 
-func UpdateOneCardLevel_DB(addLevel,cardId int) (exitstCard model.Card,err error) {
+func UpdateOneCardLevel_DB(addLevel, cardId int) (exitstCard model.Card, err error) {
 	var t = time.Now()
 	const layout2 = "2006-01-02 15:04:05"
 	// まずは既存のカードを取得
-	exitstCard,err=GetOneCard_DB(cardId)
+	exitstCard, err = GetOneCard_DB(cardId)
 	if err != nil {
 		fmt.Println("getting card failed! card_id=", cardId)
 	}
@@ -76,4 +76,3 @@ func UpdateOneCardLevel_DB(addLevel,cardId int) (exitstCard model.Card,err error
 
 	return
 }
-

@@ -28,10 +28,9 @@ func main() {
 	// カードのCRUD処理
 	r.Handle("/card/{id}", auth.JwtMiddleware.Handler(cardAuth))
 
-	// ユーザを認証した上でのカードの処理
-
 	// ユーザが作成したカードを取得
 	r.Handle("/private/card/{id}", auth.JwtMiddleware.Handler(CustomCardRequest))
+
 	// ユーザが作成したカードのレベルを更新
 	r.Path("/private/card/{id}").Queries("level", "{level}").HandlerFunc(CustomCardRequest)
 
