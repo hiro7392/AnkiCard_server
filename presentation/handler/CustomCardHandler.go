@@ -17,16 +17,7 @@ func HandleCustomCardRequest(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Handle Custom Card Request")
 
 	var err error
-	// cors用の設定
-	w.Header().Set("Access-Control-Allow-Headers", "*")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	//プリフライトリクエストへの応答
-	if r.Method == "OPTIONS" {
-		w.WriteHeader(http.StatusOK)
-		return
-	}
+	setting(w, r)
 	switch r.Method {
 	case "GET":
 		// ユーザIDからそのユーザが作成したカードを取得
@@ -34,7 +25,6 @@ func HandleCustomCardRequest(w http.ResponseWriter, r *http.Request) {
 	case "PUT":
 		// カードのレベルを更新
 		err = UpdateOneCardLevel(w, r)
-
 	}
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

@@ -14,7 +14,7 @@ import (
 )
 
 func HandleUserRequest(w http.ResponseWriter, r *http.Request) {
-
+	setting(w, r)
 	var err error
 	switch r.Method {
 	case "GET":
@@ -37,9 +37,7 @@ func HandleUserRequest(w http.ResponseWriter, r *http.Request) {
 
 // ユーザ情報を1件取得
 func GetOneUser(w http.ResponseWriter, r *http.Request) (err error) {
-	w.Header().Set("Access-Control-Allow-Methods", "GET")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+
 	id, err := strconv.Atoi(path.Base(r.URL.Path))
 	if err != nil {
 		log.Println(err)
@@ -60,10 +58,9 @@ func GetOneUser(w http.ResponseWriter, r *http.Request) (err error) {
 	return
 }
 
-//	ユーザを新規作成
+// ユーザを新規作成
 func CreateNewUser(w http.ResponseWriter, r *http.Request) (err error) {
-	w.Header().Set("Access-Control-Allow-Methods", "POST")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
+
 	u, _ := url.ParseQuery(r.URL.RawQuery)
 	//fmt.Println(u)
 
@@ -90,7 +87,7 @@ func CreateNewUser(w http.ResponseWriter, r *http.Request) (err error) {
 	return err
 }
 
-//	既存のユーザを一件削除
+// 既存のユーザを一件削除
 func DeleteOneUser(w http.ResponseWriter, r *http.Request) (err error) {
 	w.Header().Set("Access-Control-Allow-Methods", "DELETE")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
@@ -114,7 +111,7 @@ func DeleteOneUser(w http.ResponseWriter, r *http.Request) (err error) {
 	return err
 }
 
-//	カード情報を更新
+// カード情報を更新
 func UpdateOneUser(w http.ResponseWriter, r *http.Request) (err error) {
 	w.Header().Set("Access-Control-Allow-Methods", "PUT")
 	w.Header().Set("Access-Control-Allow-Origin", "*")

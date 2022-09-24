@@ -14,18 +14,22 @@ import (
 	"github.com/sakana7392/AnkiCard_server/infra/repository"
 )
 
-func HandleCardRequest(w http.ResponseWriter, r *http.Request) {
-
-	fmt.Println("HandlerCardRequest")
+func setting(w http.ResponseWriter, r *http.Request) {
+	// cors用の設定
 	w.Header().Set("Access-Control-Allow-Headers", "*")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	//プリフライトリクエストへの応答
 	if r.Method == "OPTIONS" {
 		w.WriteHeader(http.StatusOK)
 		return
 	}
+}
+func HandleCardRequest(w http.ResponseWriter, r *http.Request) {
+
+	fmt.Println("HandlerCardRequest")
+	setting(w, r)
 	var err error
 	switch r.Method {
 	case "GET":
@@ -48,7 +52,6 @@ func HandleCardRequest(w http.ResponseWriter, r *http.Request) {
 
 // カードを1件取得
 func GetOneCard(w http.ResponseWriter, r *http.Request) (err error) {
-	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 
 	vars := mux.Vars(r)
 	id := vars["id"]
@@ -97,7 +100,6 @@ func CreateNewCard(w http.ResponseWriter, r *http.Request) (err error) {
 	if err != nil {
 		log.Println(err)
 	}
-	
 
 	card.CreatedUserId = user.UserId
 
@@ -105,7 +107,6 @@ func CreateNewCard(w http.ResponseWriter, r *http.Request) (err error) {
 	tag, err := repository.GetOneTag_DB(card.TagId)
 	if err != nil {
 		log.Println(err)
-		return
 	}
 	card.TagName = tag.TagName
 	card.LearningLevel = 0

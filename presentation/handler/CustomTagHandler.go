@@ -15,16 +15,7 @@ func HandleCustomTagRequest(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Handle Custom Card Request")
 
 	var err error
-	// cors用の設定
-	w.Header().Set("Access-Control-Allow-Headers", "*")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	//プリフライトリクエストへの応答
-	if r.Method == "OPTIONS" {
-		w.WriteHeader(http.StatusOK)
-		return
-	}
+	setting(w, r)
 	switch r.Method {
 	case "GET":
 		err = GetAllTagsByUserId(w, r)
