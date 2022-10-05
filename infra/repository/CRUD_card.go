@@ -66,7 +66,7 @@ func UpdateOneCardLevel_DB(addLevel, cardId int) (existCard model.Card, err erro
 	if err != nil {
 		fmt.Println("getting card failed! card_id=", cardId)
 	}
-	_, err = infra.Db.Query(`UPDATE cards SET learning_level = learning_level + ?  WHERE card_id = ?`, addLevel, cardId)
+	_, err = infra.Db.Query("UPDATE cards SET learning_level = learning_level + ?  WHERE card_id = ?", addLevel, cardId)
 	if err != nil {
 		fmt.Println("update failed! card_id=", cardId)
 		return existCard, err
