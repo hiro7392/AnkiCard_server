@@ -58,3 +58,18 @@ func UpdateOneTag_DB(card *model.Card) (err error) {
 
 	return
 }
+func IfExistTagName(tagName string) (exist bool, err error) {
+	exist = false
+	res, err := infra.Db.Query("select exists (select * from tags where tag_name LIKE ?)", tagName)
+	if err != nil {
+		fmt.Println("notfind")
+	}
+	for res.Next() {
+		if err := res.Scan(&exist); err != nil {
+			log.Fatal(err)
+			log.Panicln(err)
+		}
+	}
+
+	return exist, err
+}
