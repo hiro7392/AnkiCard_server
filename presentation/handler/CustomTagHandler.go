@@ -33,7 +33,6 @@ func HandleCustomTagRequest(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.WriteHeader(200)
 	return
 }
 
@@ -64,6 +63,7 @@ func GetAllTagsByUserId(w http.ResponseWriter, r *http.Request) (err error) {
 	}
 
 	w.Write(output)
+	w.WriteHeader(200)
 	return
 }
 func CreateNewTag(w http.ResponseWriter, r *http.Request) (err error) {
@@ -82,6 +82,23 @@ func CreateNewTag(w http.ResponseWriter, r *http.Request) (err error) {
 	//	クエリパラメータからタグ名を取得
 	u, _ := url.ParseQuery(r.URL.RawQuery)
 	tag.TagName = u["tag_name"][0]
+
+	// 同じ名前のタグが存在しないかチェック
+	exist, err := repository.IfExistTagName(tag.TagName)
+	if err != nil {
+		log.Println(err)
+		fmt.Println("failed to check new tag!")
+	}
+	if exist {
+		fmt.Println("same tag_name is already exist!")
+		w.WriteHeader(400)
+		output, error := json.MarshalIndent("same tag_name is already exist!", "", "\t")
+		if error != nil {
+			log.Println(err)
+		}
+		w.Write(output)
+		return
+	}
 
 	if err != repository.CreateNewTag_DB(&tag) {
 		log.Println(err)
