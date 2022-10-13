@@ -1,0 +1,248 @@
+swagger: '2.0'
+
+info:
+  version: "1.0.0"
+  title: Anki Card Server API
+  description: API for my hobby application
+  contact: {
+    name: sakana7392,
+    email: hiromiimkw@gmail.com,
+  }
+paths:
+  /auth:
+    get:
+      description:
+        login by email and password
+      parameters:
+        -
+          name: email
+          in: query
+          required: true
+          type: string
+        -
+          name: password
+          in: query
+          required: true
+          type: string
+      responses:
+        200:
+          description: return bearer token of the user
+          schema:
+              title: Posts
+              type: object
+              properties:
+                  token:
+                    type: string
+                  userId:
+                    type: string
+                  userName:
+                    type: string
+      
+  /auth/no:
+    get:
+      description:
+        login by email and password
+      parameters:
+        -
+          name: email
+          in: query
+          required: true
+          type: string
+        -
+          name: password
+          in: query
+          required: true
+          type: string
+      responses:
+        200:
+          description: return bearer token of the user
+          schema:
+              title: Posts
+              type: object
+              properties:
+                  token:
+                    type: string
+                  userId:
+                    type: string
+                  userName:
+                    type: string
+  /card/:
+    create:
+      description:
+        create the new card
+      parameters:
+        -
+          name: questionText
+          in: query
+          required: true
+          type: string
+        -
+          name: answerText
+          in: query
+          required: true
+          type: string
+        -
+          name: tagId
+          in: query
+          required: false
+          type: string
+      responses:
+        200:
+          description: Successful responses
+          schema:
+              title: Posts
+              type: object
+              properties:
+                  CardId:
+                    type: string
+                  TagId:
+                    type: string
+                  TagName:
+                    type: string
+                  CreatedUserId:
+                    type: string
+                  LearningLevel:
+                    type: string
+                  QuestionText:
+                    type: string
+                  AnswerText:
+                    type: string
+  /card/{card_id}:
+    get:
+      description:
+        get the specified card
+      parameters:
+        -
+          name: quiz_id
+          in: path
+          required: true
+          type: string
+      responses:
+        200:
+          description: Successful responses
+          schema:
+              title: Posts
+              type: object
+              properties:
+                  CardId:
+                    type: string
+                  TagId:
+                    type: string
+                  TagName:
+                    type: string
+                  CreatedUserId:
+                    type: string
+                  LearningLevel:
+                    type: string
+                  QuestionText:
+                    type: string
+                  AnswerText:
+                    type: string
+    delete:
+      description:
+        delete the specified card
+      parameters:
+        -
+          name: quiz_id
+          in: path
+          required: true
+          type: string
+      responses:
+        200:
+          description: Successful responses
+          schema:
+              title: Posts
+              type: object
+              properties:
+                  CardId:
+                    type: string
+                  TagId:
+                    type: string
+                  TagName:
+                    type: string
+                  CreatedUserId:
+                    type: string
+                  LearningLevel:
+                    type: string
+                  QuestionText:
+                    type: string
+                  AnswerText:
+                    type: string
+    put:
+      description:
+        delete the specified card
+      parameters:
+        -
+          name: quiz_id
+          in: path
+          required: true
+          type: string
+      responses:
+        200:
+          description: Successful responses
+          schema:
+              title: Posts
+              type: object
+              properties:
+                  CardId:
+                    type: string
+                  TagId:
+                    type: string
+                  TagName:
+                    type: string
+                  CreatedUserId:
+                    type: string
+                  LearningLevel:
+                    type: string
+                  QuestionText:
+                    type: string
+                  AnswerText:
+                    type: string
+  /private/tag:
+    get:
+      description:
+        ユーザが作成したタグを取得
+      responses:
+        200:
+          description: Successful response
+          schema:
+              title: Posts
+              type: array
+              items:
+                title: Posts
+                type: object
+                properties:
+                  TagId:
+                    type: string
+                  CreatedUserId:
+                    type: string
+                  TagName:
+                    type: string
+
+  /private/tag/create:
+    post:
+      description:
+        タグの新規作成
+      parameters:
+        -
+          name: tag_name
+          in: query
+          required: true
+          type: string
+      responses:
+        200:
+          description: Successful response
+          schema:
+            title: Post
+            type: object
+            properties:
+                Completed:
+                  type: boolean
+        400:
+          description: when the same tag name exists.
+          schema:
+              title: Posts
+              type: object
+              properties:
+                ErrorMessage:
+                  type: string
