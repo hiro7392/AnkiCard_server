@@ -13,7 +13,9 @@ import (
 	"github.com/sakana7392/AnkiCard_server/domain/model"
 	"github.com/sakana7392/AnkiCard_server/infra/repository"
 )
-
+type Result struct{
+	Completed bool
+}
 func setting(w http.ResponseWriter, r *http.Request) {
 	// cors用の設定
 	w.Header().Set("Access-Control-Allow-Headers", "*")
@@ -46,7 +48,6 @@ func HandleCardRequest(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.WriteHeader(200)
 	return
 }
 
@@ -75,6 +76,7 @@ func GetOneCard(w http.ResponseWriter, r *http.Request) (err error) {
 	}
 
 	w.Write(output)
+	w.WriteHeader(200)
 	return
 }
 
@@ -118,10 +120,18 @@ func CreateNewCard(w http.ResponseWriter, r *http.Request) (err error) {
 		fmt.Println(err)
 		w.WriteHeader(500)
 		err.Error()
+		return err
 	} else {
-		w.WriteHeader(200)
+		//	出力をエンコード
+		result:=Result{Completed: true}
+		output, error := json.MarshalIndent(&result, "", "\t")
+		if error!=nil{
+			log.Panicln("failed to encode")
+			w.WriteHeader(500)
+		}
+		w.Write(output)
 	}
-
+	w.WriteHeader(200)
 	return err
 }
 
