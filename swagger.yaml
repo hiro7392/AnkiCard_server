@@ -67,7 +67,7 @@ paths:
                   userName:
                     type: string
   /card/:
-    create:
+    post:
       description:
         create the new card
       parameters:
@@ -138,9 +138,9 @@ paths:
                     type: string
                   AnswerText:
                     type: string
-    delete:
+    put:
       description:
-        delete the specified card
+        update the specified card
       parameters:
         -
           name: quiz_id
@@ -168,7 +168,7 @@ paths:
                     type: string
                   AnswerText:
                     type: string
-    put:
+    delete:
       description:
         delete the specified card
       parameters:
