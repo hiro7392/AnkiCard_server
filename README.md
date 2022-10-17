@@ -9,7 +9,7 @@ Mysql
 
 ## API一覧
 API詳細についてはswagger.yamlにまとめてあるので、そちらを参照ください。
-please see swagger.yaml on detail of APIs.
+<br>please see swagger.yaml on detail of APIs.
 
 * ログイン
     * GET auth/?email=email&password=pass
