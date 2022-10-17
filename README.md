@@ -8,7 +8,8 @@ Mysql
 8.0.26
 
 ## API一覧
-swagger.yaml
+API詳細についてはswagger.yamlにまとめてあるので、そちらを参照ください。
+please see swagger.yaml on detail of APIs
 
 * ログイン
     * GET auth/?email=email&password=pass
