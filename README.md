@@ -9,6 +9,7 @@ Mysql
 
 ## API一覧
 API詳細についてはswagger.yamlにまとめてあるので、そちらを参照ください。
+APIの動作確認には[Postman](https://www.postman.com/)を使用しました
 <br>please see swagger.yaml on detail of APIs.
 
 * ログイン

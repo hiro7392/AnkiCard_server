@@ -26,7 +26,7 @@ func main() {
 	r.Handle("/auth", auth.GetTokenHandler)
 
 	// カードのCRUD処理
-	r.Handle("/card/{id}", auth.JwtMiddleware.Handler(cardAuth))
+	r.Handle("/card/{id}", auth.JwtMiddleware.Handler(CardWithAuth))
 
 	// ユーザが作成したカードを取得
 	r.Handle("/private/card/{id}", auth.JwtMiddleware.Handler(CustomCardRequest))
@@ -44,7 +44,6 @@ func main() {
 
 }
 
-var cardAuth = http.HandlerFunc(handler.HandleCardRequest)
+var CardWithAuth = http.HandlerFunc(handler.HandleCardRequest)
 var CustomCardRequest = http.HandlerFunc(handler.HandleCustomCardRequest)
 var CustomTagRequest = http.HandlerFunc(handler.HandleCustomTagRequest)
-var CardCreateRequest = http.HandlerFunc(handler.HandleCardRequest)
